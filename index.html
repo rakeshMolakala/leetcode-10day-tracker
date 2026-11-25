@@ -1,0 +1,2653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>10-Day Interview Prep Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #FAF7F2;
+      --bg-subtle: #F3EEE6;
+      --surface: #FFFFFF;
+      --surface-hover: #FCFBF9;
+      --border: #E8E0D5;
+      --border-strong: #D6CBB9;
+      --ink: #221E1A;
+      --ink-secondary: #5D554C;
+      --ink-muted: #8C8277;
+      --sage: #2F7A57;
+      --sage-soft: #E8F4EE;
+      --sage-mid: #B8DFCA;
+      --terracotta: #CF643E;
+      --terracotta-soft: #FDF0EB;
+      --amber: #C4831D;
+      --amber-soft: #FDF5E6;
+      --plum: #6D548A;
+      --plum-soft: #F3EEF8;
+      --shadow-sm: 0 1px 2px rgba(34, 30, 26, 0.04);
+      --shadow-md: 0 6px 20px rgba(34, 30, 26, 0.06);
+      --shadow-lg: 0 14px 36px rgba(34, 30, 26, 0.10);
+      --radius-sm: 10px;
+      --radius-md: 16px;
+      --radius-lg: 22px;
+      --font-display: 'Fraunces', Georgia, serif;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--ink);
+      line-height: 1.55;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Confetti canvas */
+    #confetti-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* Top Shell */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(250, 247, 242, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .topbar-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--sage), #439B72);
+      color: #fff;
+      display: grid;
+      place-items: center;
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 16px;
+      box-shadow: 0 3px 10px rgba(47, 122, 87, 0.25);
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+
+    .nav-tabs {
+      display: flex;
+      gap: 4px;
+      background: var(--bg-subtle);
+      padding: 4px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .nav-tab {
+      border: none;
+      background: transparent;
+      color: var(--ink-secondary);
+      font-family: var(--font-sans);
+      font-size: 13.5px;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: 9px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.18s ease;
+    }
+
+    .nav-tab:hover {
+      color: var(--ink);
+    }
+
+    .nav-tab.active {
+      background: var(--surface);
+      color: var(--ink);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .nav-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 999px;
+      background: var(--bg-subtle);
+      color: var(--ink-secondary);
+    }
+
+    .nav-tab.active .nav-badge {
+      background: var(--sage-soft);
+      color: var(--sage);
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .save-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--sage);
+      background: var(--sage-soft);
+      padding: 5px 10px;
+      border-radius: 999px;
+    }
+
+    .save-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--sage);
+    }
+
+    .icon-btn {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--ink-secondary);
+      font-family: var(--font-sans);
+      font-size: 12.5px;
+      font-weight: 600;
+      padding: 6px 11px;
+      border-radius: 9px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.15s ease;
+    }
+
+    .icon-btn:hover {
+      border-color: var(--border-strong);
+      color: var(--ink);
+      background: var(--surface-hover);
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 24px 20px 64px;
+    }
+
+    /* Hero Summary Banner */
+    .hero {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 26px 28px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 22px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 24px;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--sage), #57A67D, var(--amber), var(--terracotta));
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--sage);
+      margin-bottom: 8px;
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(24px, 3vw, 32px);
+      font-weight: 600;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+
+    .hero-subtitle {
+      color: var(--ink-secondary);
+      font-size: 14.5px;
+      max-width: 640px;
+      margin-bottom: 14px;
+    }
+
+    .encouragement-bar {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      background: var(--sage-soft);
+      color: #1F573D;
+      padding: 8px 14px;
+      border-radius: 12px;
+      font-size: 13.5px;
+      font-weight: 600;
+    }
+
+    .hero-ring-wrap {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .ring-box {
+      position: relative;
+      width: 112px;
+      height: 112px;
+      flex-shrink: 0;
+    }
+
+    .ring-svg {
+      width: 112px;
+      height: 112px;
+      transform: rotate(-90deg);
+    }
+
+    .ring-bg {
+      fill: none;
+      stroke: var(--bg-subtle);
+      stroke-width: 9;
+    }
+
+    .ring-fill {
+      fill: none;
+      stroke: var(--sage);
+      stroke-width: 9;
+      stroke-linecap: round;
+      transition: stroke-dashoffset 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .ring-center {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ring-pct {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--ink);
+    }
+
+    .ring-lbl {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--ink-muted);
+      margin-top: 3px;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(96px, 1fr));
+      gap: 10px;
+    }
+
+    .stat-mini {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 12px;
+    }
+
+    .stat-mini-val {
+      font-family: var(--font-display);
+      font-size: 19px;
+      font-weight: 700;
+      color: var(--ink);
+      line-height: 1.1;
+    }
+
+    .stat-mini-lbl {
+      font-size: 11.5px;
+      color: var(--ink-muted);
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    /* Milestones Strip */
+    .milestones-strip {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+    }
+
+    .milestone-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      font-weight: 600;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--ink-muted);
+      transition: all 0.25s ease;
+    }
+
+    .milestone-chip.unlocked {
+      background: var(--amber-soft);
+      border-color: #EBD19E;
+      color: #8A580B;
+      box-shadow: 0 2px 8px rgba(196, 131, 29, 0.12);
+    }
+
+    /* 10-Day Journey Stepper */
+    .journey-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 16px 18px;
+      margin-bottom: 22px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .journey-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .journey-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--ink-secondary);
+    }
+
+    .start-date-control {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12.5px;
+      color: var(--ink-secondary);
+      font-weight: 500;
+    }
+
+    .start-date-control input {
+      font-family: var(--font-sans);
+      font-size: 12.5px;
+      padding: 4px 8px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--bg);
+      color: var(--ink);
+    }
+
+    .day-pills {
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      gap: 8px;
+    }
+
+    .day-pill {
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      border-radius: 12px;
+      padding: 10px 6px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.18s ease;
+      position: relative;
+      text-align: center;
+    }
+
+    .day-pill:hover {
+      border-color: var(--border-strong);
+      transform: translateY(-1px);
+    }
+
+    .day-pill.selected {
+      border-color: var(--ink);
+      background: var(--surface);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .day-pill.completed {
+      border-color: var(--sage-mid);
+      background: var(--sage-soft);
+    }
+
+    .day-pill.completed.selected {
+      border-color: var(--sage);
+    }
+
+    .day-pill-num {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--ink-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .day-pill.completed .day-pill-num {
+      color: var(--sage);
+    }
+
+    .day-pill-icon {
+      font-size: 15px;
+      font-weight: 700;
+      height: 22px;
+      display: grid;
+      place-items: center;
+      color: var(--ink);
+    }
+
+    .day-pill.completed .day-pill-icon {
+      color: var(--sage);
+    }
+
+    .day-pill-sub {
+      font-size: 10.5px;
+      color: var(--ink-muted);
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      max-width: 100%;
+    }
+
+    .day-pill-bar {
+      width: 100%;
+      height: 4px;
+      background: rgba(34, 30, 26, 0.08);
+      border-radius: 99px;
+      overflow: hidden;
+      margin-top: 2px;
+    }
+
+    .day-pill-bar-fill {
+      height: 100%;
+      background: var(--sage);
+      border-radius: 99px;
+      transition: width 0.3s ease;
+    }
+
+    /* Plan Workspace Grid */
+    .plan-grid {
+      display: grid;
+      grid-template-columns: 1fr 330px;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 22px 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .card + .card {
+      margin-top: 16px;
+    }
+
+    /* Active Day Card */
+    .day-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .day-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--terracotta);
+      margin-bottom: 4px;
+    }
+
+    .day-date-tag {
+      background: var(--bg-subtle);
+      color: var(--ink-secondary);
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 11px;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+
+    .day-title {
+      font-family: var(--font-display);
+      font-size: 24px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+
+    .day-nav-btns {
+      display: flex;
+      gap: 6px;
+    }
+
+    .focus-banner {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-left: 3.5px solid var(--terracotta);
+      border-radius: 10px;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      font-size: 13.5px;
+      color: var(--ink-secondary);
+    }
+
+    .focus-banner strong {
+      color: var(--ink);
+    }
+
+    .followup-banner {
+      background: var(--plum-soft);
+      border: 1px solid #DFD4EC;
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-bottom: 16px;
+      font-size: 13px;
+      color: #4A3563;
+    }
+
+    .tip-banner {
+      background: var(--amber-soft);
+      border: 1px solid #EBD8B2;
+      border-radius: 10px;
+      padding: 10px 14px;
+      margin-bottom: 16px;
+      font-size: 13px;
+      color: #7D5008;
+    }
+
+    /* Task / Problem Rows */
+    .task-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .task-item {
+      border: 1.5px solid var(--border);
+      border-radius: 13px;
+      padding: 13px 15px;
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      transition: all 0.18s ease;
+    }
+
+    .task-item:hover {
+      border-color: var(--border-strong);
+      background: var(--surface-hover);
+    }
+
+    .task-item.done {
+      background: #F6FBF8;
+      border-color: var(--sage-mid);
+    }
+
+    .check-btn {
+      width: 24px;
+      height: 24px;
+      border-radius: 8px;
+      border: 2px solid var(--border-strong);
+      background: var(--surface);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      transition: all 0.16s ease;
+      color: transparent;
+    }
+
+    .check-btn:hover {
+      border-color: var(--sage);
+    }
+
+    .task-item.done .check-btn {
+      background: var(--sage);
+      border-color: var(--sage);
+      color: #fff;
+    }
+
+    .task-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .task-title-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .lc-num {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--ink-secondary);
+      background: var(--bg-subtle);
+      padding: 2px 7px;
+      border-radius: 6px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .review-tag {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--plum);
+      background: var(--plum-soft);
+      padding: 2px 7px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .task-name {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ink);
+      transition: color 0.15s;
+    }
+
+    .task-item.done .task-name {
+      text-decoration: line-through;
+      color: var(--ink-muted);
+    }
+
+    .task-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    .lc-link {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--terracotta);
+      text-decoration: none;
+      padding: 5px 10px;
+      border-radius: 8px;
+      background: var(--terracotta-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s;
+    }
+
+    .lc-link:hover {
+      background: #FADFD4;
+    }
+
+    .flag-btn {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--ink-muted);
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 5px 9px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s;
+      font-family: var(--font-sans);
+    }
+
+    .flag-btn:hover {
+      border-color: var(--amber);
+      color: var(--amber);
+    }
+
+    .flag-btn.flagged {
+      background: var(--amber-soft);
+      border-color: #E5C17B;
+      color: #9A6309;
+    }
+
+    .swap-btn {
+      border: 1px dashed var(--border-strong);
+      background: transparent;
+      color: var(--ink-muted);
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 5px 8px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: var(--font-sans);
+    }
+
+    .swap-btn:hover {
+      color: var(--ink);
+      border-color: var(--ink-secondary);
+    }
+
+    /* Day Notes */
+    .day-notes-box {
+      margin-top: 20px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+    }
+
+    .day-notes-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12.5px;
+      font-weight: 700;
+      color: var(--ink-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+
+    .notes-textarea {
+      width: 100%;
+      min-height: 86px;
+      padding: 12px 14px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      background: var(--bg);
+      font-family: var(--font-sans);
+      font-size: 13.5px;
+      color: var(--ink);
+      resize: vertical;
+      line-height: 1.5;
+      transition: border-color 0.15s;
+    }
+
+    .notes-textarea:focus {
+      outline: none;
+      border-color: var(--sage);
+      background: var(--surface);
+    }
+
+    /* Sidebar Cards */
+    .side-title {
+      font-family: var(--font-display);
+      font-size: 17px;
+      font-weight: 600;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .side-sub {
+      font-size: 12.5px;
+      color: var(--ink-muted);
+      margin-bottom: 14px;
+    }
+
+    .schedule-list {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .sched-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 9px 10px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      cursor: pointer;
+      transition: all 0.15s;
+      user-select: none;
+    }
+
+    .sched-row:hover {
+      border-color: var(--border-strong);
+    }
+
+    .sched-row.done {
+      background: var(--sage-soft);
+      border-color: var(--sage-mid);
+    }
+
+    .sched-check {
+      width: 18px;
+      height: 18px;
+      border-radius: 6px;
+      border: 1.5px solid var(--border-strong);
+      background: var(--surface);
+      display: grid;
+      place-items: center;
+      margin-top: 1px;
+      flex-shrink: 0;
+      font-size: 11px;
+      color: transparent;
+    }
+
+    .sched-row.done .sched-check {
+      background: var(--sage);
+      border-color: var(--sage);
+      color: #fff;
+    }
+
+    .sched-time {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--terracotta);
+      display: block;
+    }
+
+    .sched-desc {
+      font-size: 12.5px;
+      color: var(--ink);
+      line-height: 1.35;
+    }
+
+    .sched-row.done .sched-desc {
+      color: var(--ink-muted);
+      text-decoration: line-through;
+    }
+
+    .rule-card {
+      background: linear-gradient(180deg, #FFFDF9 0%, #FAF3E8 100%);
+      border: 1px solid #E9DAC3;
+    }
+
+    .rule-text {
+      font-size: 13px;
+      color: var(--ink-secondary);
+      line-height: 1.55;
+    }
+
+    .reattempt-pill-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .reattempt-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 12.5px;
+      padding: 7px 10px;
+      border-radius: 9px;
+      background: var(--amber-soft);
+      color: #7D5008;
+      border: 1px solid #EBD8B2;
+      cursor: pointer;
+    }
+
+    /* Behavioral Section */
+    .section-header {
+      margin-bottom: 18px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .section-header h2 {
+      font-family: var(--font-display);
+      font-size: 25px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    .section-header p {
+      color: var(--ink-secondary);
+      font-size: 14px;
+      margin-top: 3px;
+    }
+
+    .stories-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .story-card {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 18px 20px;
+      box-shadow: var(--shadow-sm);
+      transition: border-color 0.2s;
+    }
+
+    .story-card.done {
+      border-color: var(--sage-mid);
+      background: linear-gradient(180deg, #FFFFFF 0%, #F7FCF9 100%);
+    }
+
+    .story-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .story-head-left {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+    }
+
+    .story-title {
+      font-family: var(--font-display);
+      font-size: 17.5px;
+      font-weight: 600;
+    }
+
+    .story-prompts {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .prompt-field label {
+      display: block;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--ink-secondary);
+      margin-bottom: 3px;
+    }
+
+    .prompt-field textarea {
+      width: 100%;
+      min-height: 46px;
+      padding: 8px 10px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: var(--bg);
+      font-family: var(--font-sans);
+      font-size: 13px;
+      color: var(--ink);
+      resize: vertical;
+    }
+
+    .prompt-field textarea:focus {
+      outline: none;
+      border-color: var(--sage);
+      background: var(--surface);
+    }
+
+    /* 45-Minute Mock Timer */
+    .timer-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .timer-display-card {
+      text-align: center;
+      padding: 32px 26px;
+    }
+
+    .phase-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: var(--terracotta-soft);
+      color: var(--terracotta);
+      font-size: 12.5px;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .clock-big {
+      font-family: var(--font-display);
+      font-size: clamp(54px, 7vw, 76px);
+      font-weight: 600;
+      letter-spacing: -0.03em;
+      font-variant-numeric: tabular-nums;
+      line-height: 1;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    .clock-sub {
+      font-size: 13.5px;
+      color: var(--ink-secondary);
+      margin-bottom: 22px;
+    }
+
+    .phase-timeline {
+      display: flex;
+      gap: 4px;
+      height: 10px;
+      margin-bottom: 24px;
+    }
+
+    .phase-seg {
+      border-radius: 999px;
+      background: var(--bg-subtle);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .phase-seg-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--sage);
+      transition: width 0.35s linear;
+    }
+
+    .phase-seg.active .phase-seg-fill {
+      background: var(--terracotta);
+    }
+
+    .timer-controls {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      border: none;
+      background: var(--sage);
+      color: #fff;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 11px 22px;
+      border-radius: 11px;
+      cursor: pointer;
+      transition: all 0.15s;
+      box-shadow: 0 3px 10px rgba(47, 122, 87, 0.22);
+    }
+
+    .btn-primary:hover {
+      background: #256447;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      color: var(--ink);
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 600;
+      padding: 10px 18px;
+      border-radius: 11px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--border-strong);
+      background: var(--bg);
+    }
+
+    .phase-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .phase-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 13px 15px;
+      border-radius: 12px;
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      transition: all 0.2s;
+    }
+
+    .phase-row.active {
+      border-color: var(--terracotta);
+      background: var(--terracotta-soft);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .phase-row.passed {
+      border-color: var(--sage-mid);
+      background: var(--sage-soft);
+    }
+
+    .phase-min {
+      font-size: 12px;
+      font-weight: 700;
+      padding: 4px 9px;
+      border-radius: 8px;
+      background: var(--surface);
+      color: var(--ink-secondary);
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .phase-row.active .phase-min {
+      background: var(--terracotta);
+      color: #fff;
+    }
+
+    .phase-row.passed .phase-min {
+      background: var(--sage);
+      color: #fff;
+    }
+
+    /* Mistake Log */
+    .mistake-form {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+
+    .form-group label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--ink-secondary);
+    }
+
+    .form-input {
+      padding: 10px 12px;
+      border: 1.5px solid var(--border);
+      border-radius: 10px;
+      background: var(--bg);
+      font-family: var(--font-sans);
+      font-size: 13.5px;
+      color: var(--ink);
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--sage);
+      background: var(--surface);
+    }
+
+    .mistake-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .mistake-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 15px 18px;
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .mistake-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+    }
+
+    .mistake-pattern {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--plum-soft);
+      color: var(--plum);
+    }
+
+    .mistake-date {
+      font-size: 11.5px;
+      color: var(--ink-muted);
+    }
+
+    .mistake-text {
+      font-size: 13.5px;
+      color: var(--ink-secondary);
+      margin-bottom: 5px;
+    }
+
+    .mistake-fix {
+      font-size: 13.5px;
+      color: var(--sage);
+      font-weight: 600;
+    }
+
+    .delete-btn {
+      border: none;
+      background: transparent;
+      color: var(--ink-muted);
+      cursor: pointer;
+      font-size: 16px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      align-self: flex-start;
+    }
+
+    .delete-btn:hover {
+      background: #FCECEC;
+      color: #B93838;
+    }
+
+    /* Toast Celebration */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 200;
+      background: var(--ink);
+      color: #fff;
+      padding: 14px 18px;
+      border-radius: 14px;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      max-width: 380px;
+      transform: translateY(120px);
+      opacity: 0;
+      transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+      pointer-events: none;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .toast-emoji {
+      font-size: 24px;
+    }
+
+    .toast-title {
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .toast-sub {
+      font-size: 12.5px;
+      color: #D5CEC6;
+      margin-top: 2px;
+    }
+
+    /* Modal */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(34, 30, 26, 0.45);
+      backdrop-filter: blur(4px);
+      z-index: 300;
+      display: none;
+      place-items: center;
+      padding: 20px;
+    }
+
+    .modal-backdrop.open {
+      display: grid;
+    }
+
+    .modal {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: 24px 26px;
+      max-width: 460px;
+      width: 100%;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+    }
+
+    .modal h3 {
+      font-family: var(--font-display);
+      font-size: 20px;
+      margin-bottom: 6px;
+    }
+
+    .modal p {
+      font-size: 13.5px;
+      color: var(--ink-secondary);
+      margin-bottom: 16px;
+    }
+
+    .modal-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .view-panel { display: none; }
+    .view-panel.active { display: block; }
+
+    .empty-state {
+      text-align: center;
+      padding: 36px 20px;
+      color: var(--ink-muted);
+      font-size: 14px;
+      border: 1.5px dashed var(--border);
+      border-radius: 14px;
+    }
+
+    @media (max-width: 960px) {
+      .hero { grid-template-columns: 1fr; }
+      .day-pills { grid-template-columns: repeat(5, 1fr); }
+      .plan-grid { grid-template-columns: 1fr; }
+      .stories-grid { grid-template-columns: 1fr; }
+      .timer-layout { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 600px) {
+      .topbar-inner { padding: 10px 14px; }
+      .nav-tabs { width: 100%; overflow-x: auto; }
+      .nav-tab { white-space: nowrap; font-size: 12.5px; padding: 7px 11px; }
+      .hero { padding: 20px 18px; }
+      .card { padding: 18px 16px; }
+      .task-item { flex-wrap: wrap; }
+      .task-actions { width: 100%; justify-content: flex-end; padding-left: 36px; }
+      .mistake-form { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="confetti-canvas"></canvas>
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <div class="brand-mark">10</div>
+        <div class="brand-title">10-Day Interview Prep</div>
+      </div>
+
+      <nav class="nav-tabs" role="tablist">
+        <button class="nav-tab active" data-view="plan">
+          10-Day Plan <span class="nav-badge" id="nav-plan-badge">0/35</span>
+        </button>
+        <button class="nav-tab" data-view="behavioral">
+          Behavioral <span class="nav-badge" id="nav-beh-badge">0/6</span>
+        </button>
+        <button class="nav-tab" data-view="timer">
+          45m Mock Timer
+        </button>
+        <button class="nav-tab" data-view="mistakes">
+          Mistake Log <span class="nav-badge" id="nav-mis-badge">0</span>
+        </button>
+      </nav>
+
+      <div class="topbar-actions">
+        <span class="save-pill" id="save-pill" title="Everything saves automatically in this browser">
+          <span class="save-dot"></span> Saved locally
+        </span>
+        <button class="icon-btn" id="open-backup-btn">Backup / Info</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Hero Progress Summary -->
+    <section class="hero">
+      <div>
+        <div class="hero-eyebrow">DSA + Nontechnical Interview Sprint</div>
+        <h1>One focused day at a time.</h1>
+        <p class="hero-subtitle">
+          Prioritize independent problem solving, clear explanations, thorough testing, and adapting calmly to follow-ups.
+        </p>
+        <div class="encouragement-bar" id="encouragement-text">
+          <span>✨</span>
+          <span>Day 1 is where momentum starts — knock out your first sliding-window problem!</span>
+        </div>
+      </div>
+
+      <div class="hero-ring-wrap">
+        <div class="ring-box">
+          <svg class="ring-svg" viewBox="0 0 112 112">
+            <circle class="ring-bg" cx="56" cy="56" r="46"></circle>
+            <circle class="ring-fill" id="progress-ring" cx="56" cy="56" r="46" stroke-dasharray="289.03" stroke-dashoffset="289.03"></circle>
+          </svg>
+          <div class="ring-center">
+            <div class="ring-pct" id="overall-pct">0%</div>
+            <div class="ring-lbl">Complete</div>
+          </div>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-mini">
+            <div class="stat-mini-val" id="stat-days">0 / 10</div>
+            <div class="stat-mini-lbl">Days Done</div>
+          </div>
+          <div class="stat-mini">
+            <div class="stat-mini-val" id="stat-problems">0 / 26</div>
+            <div class="stat-mini-lbl">DSA Problems</div>
+          </div>
+          <div class="stat-mini">
+            <div class="stat-mini-val" id="stat-stories">0 / 6</div>
+            <div class="stat-mini-lbl">Stories Ready</div>
+          </div>
+          <div class="stat-mini">
+            <div class="stat-mini-val" id="stat-reattempt">0</div>
+            <div class="stat-mini-lbl">To Reattempt</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Milestones Strip -->
+    <section class="milestones-strip" id="milestones-strip"></section>
+
+    <!-- VIEW 1: 10-DAY PLAN -->
+    <section class="view-panel active" id="view-plan">
+      <div class="journey-wrap">
+        <div class="journey-head">
+          <div class="journey-title">10-Day Roadmap</div>
+          <label class="start-date-control">
+            Start Date (optional):
+            <input type="date" id="start-date-input" />
+          </label>
+        </div>
+        <div class="day-pills" id="day-pills"></div>
+      </div>
+
+      <div class="plan-grid">
+        <!-- Main Active Day Card -->
+        <div>
+          <div class="card" id="active-day-card"></div>
+        </div>
+
+        <!-- Sidebar -->
+        <aside>
+          <div class="card" id="daily-schedule-card"></div>
+
+          <div class="card" id="reattempt-card" style="display:none;">
+            <div class="side-title">Flagged for Reattempt</div>
+            <div class="side-sub">Great picks for your daily 1.5h reattempt block or Day 9 repair.</div>
+            <div class="reattempt-pill-list" id="reattempt-list"></div>
+          </div>
+
+          <div class="card rule-card">
+            <div class="side-title">Adaptation Rule</div>
+            <p class="rule-text" style="margin-top:6px;">
+              If today's core problems need more work, <strong>reduce new problems</strong>. Preserve reattempts, testing, and behavioral preparation.
+            </p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- VIEW 2: BEHAVIORAL STORIES -->
+    <section class="view-panel" id="view-behavioral">
+      <div class="section-header">
+        <div>
+          <h2>Behavioral Stories</h2>
+          <p>Draft concise, honest bullet points for all 6 themes. Everything auto-saves right here.</p>
+        </div>
+      </div>
+      <div class="stories-grid" id="stories-grid"></div>
+    </section>
+
+    <!-- VIEW 3: 45-MINUTE MOCK TIMER -->
+    <section class="view-panel" id="view-timer">
+      <div class="section-header">
+        <div>
+          <h2>45-Minute Technical Mock Pacing</h2>
+          <p>Practice pacing yourself cleanly from clarification to complexity and follow-ups.</p>
+        </div>
+      </div>
+
+      <div class="timer-layout">
+        <div class="card timer-display-card">
+          <div class="phase-badge" id="timer-phase-badge">Ready · Phase 1 of 5</div>
+          <div class="clock-big" id="timer-clock">45:00</div>
+          <div class="clock-sub" id="timer-sub">Elapsed: 00:00 · Clarify inputs, constraints, and examples</div>
+
+          <div class="phase-timeline" id="phase-timeline"></div>
+
+          <div class="timer-controls">
+            <button class="btn-primary" id="timer-toggle-btn">Start Mock</button>
+            <button class="btn-secondary" id="timer-reset-btn">Reset</button>
+            <button class="btn-secondary" id="timer-sound-btn">Chime: On</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="side-title" style="margin-bottom: 12px;">Interview Breakdown</div>
+          <div class="phase-list" id="phase-list"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VIEW 4: MISTAKE LOG -->
+    <section class="view-panel" id="view-mistakes">
+      <div class="section-header">
+        <div>
+          <h2>Mistake & Pattern Log</h2>
+          <p>Spend 15 minutes at the end of each day capturing recurring pitfalls so they never catch you twice.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <form class="mistake-form" id="mistake-form">
+          <div class="form-group">
+            <label for="m-problem">Problem or Topic</label>
+            <input class="form-input" id="m-problem" type="text" placeholder="e.g., 76. Minimum Window Substring" required />
+          </div>
+          <div class="form-group">
+            <label for="m-pattern">Pattern / Category</label>
+            <select class="form-input" id="m-pattern">
+              <option>Sliding Window</option>
+              <option>Grids / DFS / BFS</option>
+              <option>Graph Paths / Dijkstra</option>
+              <option>Trees / Topo Sort</option>
+              <option>Intervals / Greedy</option>
+              <option>Binary Search / DP</option>
+              <option>Union-Find / Backtracking / Trie</option>
+              <option>Edge Cases / Testing</option>
+              <option>Communication / Mock</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label for="m-what">What tripped me up?</label>
+            <input class="form-input" id="m-what" type="text" placeholder="e.g., Forgot to decrement matched count only when frequency dropped below required" required />
+          </div>
+          <div class="form-group full">
+            <label for="m-fix">Rule / Cue for next time</label>
+            <input class="form-input" id="m-fix" type="text" placeholder="e.g., Track `need` vs `have` distinct chars and dry-run duplicate chars first" required />
+          </div>
+          <div class="form-group full" style="align-items:flex-end;">
+            <button type="submit" class="btn-primary">Add to Mistake Log</button>
+          </div>
+        </form>
+
+        <div class="mistake-list" id="mistake-list"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Toast Celebration -->
+  <div class="toast" id="toast">
+    <div class="toast-emoji" id="toast-emoji">🎉</div>
+    <div>
+      <div class="toast-title" id="toast-title">Milestone Unlocked!</div>
+      <div class="toast-sub" id="toast-sub">You're building serious momentum.</div>
+    </div>
+  </div>
+
+  <!-- Backup & Info Modal -->
+  <div class="modal-backdrop" id="backup-modal">
+    <div class="modal">
+      <h3>Progress & Plan Info</h3>
+      <p>
+        Your checkboxes, notes, behavioral stories, and mistake log are saved automatically in this browser's local storage — no account needed.
+      </p>
+      <div style="background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 12px 14px; font-size: 12.5px; color: var(--ink-secondary); margin-bottom: 16px;">
+        <strong style="color: var(--ink); display:block; margin-bottom:4px;">Plan Basis</strong>
+        The sliding-window set comes from Google's three-month list. The remaining topics provide broader coverage informed by interview reports (not a verified overall frequency ranking).
+      </div>
+      <div class="modal-actions">
+        <button class="btn-primary" id="export-btn">Download Backup (.json)</button>
+        <button class="btn-secondary" id="import-btn">Restore from Backup (.json)</button>
+        <input type="file" id="import-file" accept=".json" style="display:none;" />
+        <button class="btn-secondary" id="reset-btn" style="color:#B93838; border-color:#F0CACA;">Reset All Progress</button>
+        <button class="icon-btn" id="close-backup-btn" style="justify-content:center; margin-top:4px;">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // =========================================================
+    // 10-DAY PLAN DATA
+    // =========================================================
+    const PLAN_DAYS = [
+      {
+        day: 1,
+        short: "Sliding I",
+        title: "Sliding-Window Foundations",
+        focus: "Valid windows, frequency counts, and when to shrink.",
+        hasDailySchedule: true,
+        tasks: [
+          { id: "d1-1", num: "3", title: "Longest Substring Without Repeating Characters", slug: "longest-substring-without-repeating-characters", isProblem: true },
+          { id: "d1-2", num: "904", title: "Fruit Into Baskets", slug: "fruit-into-baskets", isProblem: true },
+          { id: "d1-3", num: "1004", title: "Max Consecutive Ones III", slug: "max-consecutive-ones-iii", isProblem: true },
+          { id: "d1-4", num: "424", title: "Longest Repeating Character Replacement", slug: "longest-repeating-character-replacement", isProblem: true, isReview: true }
+        ]
+      },
+      {
+        day: 2,
+        short: "Sliding II",
+        title: "Sliding-Window Variations",
+        focus: "Shortest versus longest windows, transforming the objective, and deque reasoning.",
+        hasDailySchedule: true,
+        tasks: [
+          { id: "d2-1", num: "209", title: "Minimum Size Subarray Sum", slug: "minimum-size-subarray-sum", isProblem: true },
+          { id: "d2-2", num: "76", title: "Minimum Window Substring", slug: "minimum-window-substring", isProblem: true },
+          { id: "d2-3", num: "1658", title: "Minimum Operations to Reduce X to Zero", slug: "minimum-operations-to-reduce-x-to-zero", isProblem: true },
+          { id: "d2-4", num: "239", title: "Sliding Window Maximum", slug: "sliding-window-maximum", isProblem: true, isReview: true }
+        ]
+      },
+      {
+        day: 3,
+        short: "Grids",
+        title: "Grids",
+        focus: "Visited state, boundaries, and connectivity.",
+        followup: "Count enclosed water components.",
+        hasDailySchedule: true,
+        tasks: [
+          { id: "d3-1", num: "200", title: "Number of Islands", slug: "number-of-islands", isProblem: true },
+          { id: "d3-2", num: "130", title: "Surrounded Regions", slug: "surrounded-regions", isProblem: true },
+          { id: "d3-3", num: "1020", title: "Number of Enclaves", slug: "number-of-enclaves", isProblem: true }
+        ]
+      },
+      {
+        day: 4,
+        short: "Graphs",
+        title: "Graph Paths",
+        focus: "When DFS, BFS, or Dijkstra fits; unreachable nodes; complexity.",
+        hasDailySchedule: true,
+        tasks: [
+          { id: "d4-1", num: "1971", title: "Find if Path Exists in Graph", slug: "find-if-path-exists-in-graph", isProblem: true },
+          { id: "d4-2", num: "743", title: "Network Delay Time", slug: "network-delay-time", isProblem: true },
+          { id: "d4-3", num: "1514", title: "Path with Maximum Probability", slug: "path-with-maximum-probability", isProblem: true }
+        ]
+      },
+      {
+        day: 5,
+        short: "Trees",
+        title: "Trees and Dependencies",
+        focus: "Tree traversal, graph conversion from parent pointers, and topological ordering.",
+        followup: "Explain cycle detection and representing parent connections.",
+        hasDailySchedule: true,
+        tasks: [
+          { id: "d5-1", num: "236", title: "Lowest Common Ancestor of a Binary Tree", slug: "lowest-common-ancestor-of-a-binary-tree", isProblem: true },
+          { id: "d5-2", num: "863", title: "All Nodes Distance K in Binary Tree", slug: "all-nodes-distance-k-in-binary-tree", isProblem: true },
+          { id: "d5-3", num: "207", title: "Course Schedule", slug: "course-schedule", isProblem: true }
+        ]
+      },
+      {
+        day: 6,
+        short: "Intervals",
+        title: "Intervals and Scheduling",
+        focus: "Greedy versus DP; define the DP state before optimizing.",
+        tip: "For 1235, allow a guided learning session if needed, then reconstruct independently.",
+        hasDailySchedule: true,
+        tasks: [
+          { id: "d6-1", num: "56", title: "Merge Intervals", slug: "merge-intervals", isProblem: true },
+          { id: "d6-2", num: "435", title: "Non-overlapping Intervals", slug: "non-overlapping-intervals", isProblem: true },
+          { id: "d6-3", num: "1235", title: "Maximum Profit in Job Scheduling", slug: "maximum-profit-in-job-scheduling", isProblem: true }
+        ]
+      },
+      {
+        day: 7,
+        short: "BS & DP",
+        title: "Binary Search and DP",
+        focus: "Monotonic feasibility, search boundaries, and DP state meaning.",
+        hasDailySchedule: true,
+        tasks: [
+          { id: "d7-1", num: "875", title: "Koko Eating Bananas", slug: "koko-eating-bananas", isProblem: true },
+          { id: "d7-2", num: "1011", title: "Capacity to Ship Packages Within D Days", slug: "capacity-to-ship-packages-within-d-days", isProblem: true },
+          { id: "d7-3", num: "416", title: "Partition Equal Subset Sum", slug: "partition-equal-subset-sum", isProblem: true }
+        ]
+      },
+      {
+        day: 8,
+        short: "Fill Gaps",
+        title: "Fill Gaps",
+        focus: "Traversal versus Union-Find, backtracking, and basic trie operations.",
+        tip: "Replace any of these with a more urgent weakness found in mocks — click 'Swap' on any item to customize.",
+        hasDailySchedule: true,
+        customizable: true,
+        tasks: [
+          { id: "d8-1", num: "684", title: "Redundant Connection", slug: "redundant-connection", isProblem: true },
+          { id: "d8-2", num: "22", title: "Generate Parentheses", slug: "generate-parentheses", isProblem: true },
+          { id: "d8-3", num: "208", title: "Implement Trie (Prefix Tree)", slug: "implement-trie-prefix-tree", isProblem: true }
+        ]
+      },
+      {
+        day: 9,
+        short: "Sim & Fix",
+        title: "Simulation and Repair",
+        focus: "Full interview simulation, honest post-mortems, and patching weak spots.",
+        hasDailySchedule: false,
+        tasks: [
+          { id: "d9-1", title: "Two unseen 45-minute technical mocks" },
+          { id: "d9-2", title: "Review each mock for reasoning, implementation, testing, and communication" },
+          { id: "d9-3", title: "Reattempt three weakest problems" },
+          { id: "d9-4", title: "Complete one behavioral mock" },
+          { id: "d9-5", title: "Review actual resume contributions and technical trade-offs" }
+        ]
+      },
+      {
+        day: 10,
+        short: "Light Day",
+        title: "Light Review & Rest",
+        focus: "Stay sharp and calm. Trust the work you've already put in.",
+        tip: "Limit preparation to 2–3 hours today. Finish early and rest!",
+        hasDailySchedule: false,
+        tasks: [
+          { id: "d10-1", title: "Reimplement one familiar graph problem" },
+          { id: "d10-2", title: "Reimplement one previously missed problem" },
+          { id: "d10-3", title: "Review pattern notes and recurring mistakes" },
+          { id: "d10-4", title: "Review behavioral story outlines" },
+          { id: "d10-5", title: "Check interview instructions and equipment" },
+          { id: "d10-6", title: "Finish early and rest" }
+        ]
+      }
+    ];
+
+    const DAILY_SCHEDULE = [
+      { id: "s1", time: "2½ hours", desc: "Learn one pattern through an anchor and variations" },
+      { id: "s2", time: "1½ hours", desc: "Reattempt previous problems without notes" },
+      { id: "s3", time: "1½ hours", desc: "Mixed problems without topic labels" },
+      { id: "s4", time: "1½ hours", desc: "45-minute mock + 45-minute review" },
+      { id: "s5", time: "45 mins", desc: "Behavioral preparation" },
+      { id: "s6", time: "15 mins", desc: "Update mistake log" }
+    ];
+
+    const BEHAVIORAL_STORIES = [
+      { id: "b1", title: "Handling ambiguity" },
+      { id: "b2", title: "Disagreeing constructively" },
+      { id: "b3", title: "Receiving critical feedback" },
+      { id: "b4", title: "Helping a teammate" },
+      { id: "b5", title: "Making and correcting a mistake" },
+      { id: "b6", title: "Choosing between technical approaches" }
+    ];
+
+    const STORY_PROMPTS = [
+      { key: "what", label: "What happened?" },
+      { key: "did", label: "What did I personally do?" },
+      { key: "why", label: "Why?" },
+      { key: "verify", label: "How did I verify the result?" },
+      { key: "learn", label: "What did I learn?" }
+    ];
+
+    const MOCK_PHASES = [
+      { start: 0, end: 5, label: "Clarify inputs, constraints, and examples" },
+      { start: 5, end: 12, label: "Explain baseline and improved approach" },
+      { start: 12, end: 32, label: "Implement cleanly" },
+      { start: 32, end: 40, label: "Test normal and edge cases" },
+      { start: 40, end: 45, label: "Complexity and follow-ups" }
+    ];
+
+    // =========================================================
+    // STATE MANAGEMENT (localStorage)
+    // =========================================================
+    const STORAGE_KEY = "leetcode_10day_prep_v1";
+
+    const defaultState = {
+      selectedDay: 1,
+      startDate: "",
+      completedTasks: {},     // { taskId: true }
+      reattemptFlags: {},     // { taskId: true }
+      scheduleDone: {},       // { "d1-s1": true }
+      dayNotes: {},           // { "1": "..." }
+      customTitles: {},       // { "d8-1": "Custom Problem" }
+      completedStories: {},   // { b1: true }
+      storyNotes: {},         // { b1: { what, did, why, verify, learn } }
+      mistakes: [],           // [{ id, problem, pattern, what, fix, date }]
+      celebrated: {}          // { "day-1": true, "halfway": true, ... }
+    };
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return structuredClone(defaultState);
+        const parsed = JSON.parse(raw);
+        return { ...structuredClone(defaultState), ...parsed };
+      } catch (e) {
+        return structuredClone(defaultState);
+      }
+    }
+
+    let state = loadState();
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        const pill = document.getElementById("save-pill");
+        if (pill) {
+          pill.innerHTML = '<span class="save-dot"></span> Saved';
+          clearTimeout(window._saveFlash);
+          window._saveFlash = setTimeout(() => {
+            pill.innerHTML = '<span class="save-dot"></span> Saved locally';
+          }, 1200);
+        }
+      } catch (e) {
+        console.warn("Could not save to localStorage", e);
+      }
+    }
+
+    // =========================================================
+    // CONFETTI & TOAST CELEBRATIONS
+    // =========================================================
+    let toastTimer = null;
+    function showToast(emoji, title, sub) {
+      const el = document.getElementById("toast");
+      document.getElementById("toast-emoji").textContent = emoji;
+      document.getElementById("toast-title").textContent = title;
+      document.getElementById("toast-sub").textContent = sub;
+      el.classList.add("show");
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => el.classList.remove("show"), 4200);
+    }
+
+    function launchConfetti() {
+      const canvas = document.getElementById("confetti-canvas");
+      const ctx = canvas.getContext("2d");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      const colors = ["#2F7A57", "#CF643E", "#E0A229", "#6D548A", "#57B284", "#F2C14E"];
+      const particles = Array.from({ length: 85 }, () => ({
+        x: canvas.width * (0.25 + Math.random() * 0.5),
+        y: canvas.height * 0.35 + (Math.random() * 60 - 30),
+        vx: (Math.random() - 0.5) * 12,
+        vy: Math.random() * -11 - 4,
+        size: Math.random() * 7 + 4,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        rot: Math.random() * 360,
+        vrot: (Math.random() - 0.5) * 12,
+        life: 1
+      }));
+
+      function frame() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        let alive = false;
+        for (const p of particles) {
+          if (p.life <= 0) continue;
+          alive = true;
+          p.x += p.vx;
+          p.y += p.vy;
+          p.vy += 0.32;
+          p.rot += p.vrot;
+          p.life -= 0.012;
+          ctx.save();
+          ctx.globalAlpha = Math.max(0, p.life);
+          ctx.translate(p.x, p.y);
+          ctx.rotate((p.rot * Math.PI) / 180);
+          ctx.fillStyle = p.color;
+          ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.65);
+          ctx.restore();
+        }
+        if (alive) requestAnimationFrame(frame);
+        else ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+      requestAnimationFrame(frame);
+    }
+
+    // =========================================================
+    // STATS & MILESTONES
+    // =========================================================
+    function getStats() {
+      const allTasks = PLAN_DAYS.flatMap(d => d.tasks);
+      const totalTasks = allTasks.length;
+      const doneTasks = allTasks.filter(t => state.completedTasks[t.id]).length;
+
+      const problemTasks = allTasks.filter(t => t.isProblem);
+      const doneProblems = problemTasks.filter(t => state.completedTasks[t.id]).length;
+
+      const doneDays = PLAN_DAYS.filter(d => d.tasks.every(t => state.completedTasks[t.id])).length;
+      const doneStories = BEHAVIORAL_STORIES.filter(s => state.completedStories[s.id]).length;
+      const reattemptCount = Object.values(state.reattemptFlags).filter(Boolean).length;
+
+      const totalUnits = totalTasks + BEHAVIORAL_STORIES.length;
+      const doneUnits = doneTasks + doneStories;
+      const pct = totalUnits ? Math.round((doneUnits / totalUnits) * 100) : 0;
+
+      return {
+        totalTasks, doneTasks,
+        totalProblems: problemTasks.length, doneProblems,
+        doneDays, doneStories, reattemptCount,
+        pct
+      };
+    }
+
+    function getEncouragement(stats) {
+      if (stats.pct === 100) return ["🏆", "Every single item checked off — you are ready to walk in calm and confident!"];
+      if (stats.doneDays >= 8) return ["🌟", "Core topics conquered! Now it's all about smooth simulation, light polish, and good rest."];
+      if (stats.pct >= 50) return ["🔥", "Past the halfway mark! Your pattern recognition is compounding every single day."];
+      if (stats.doneDays >= 2) return ["🌿", "Sliding windows mastered and momentum rolling — keep trusting the process!"];
+      if (stats.doneDays >= 1) return ["🎉", "Day 1 in the books! Showing up and finishing the first day is huge."];
+      if (stats.doneTasks > 0 || stats.doneStories > 0) return ["✨", "Great start! Small focused wins add up fast over 10 days."];
+      return ["🌱", "Day 1 is where momentum starts — knock out your first sliding-window problem!"];
+    }
+
+    function checkNewCelebrations(triggerDayNum = null) {
+      const stats = getStats();
+      let celebratedNow = false;
+
+      if (triggerDayNum) {
+        const dayObj = PLAN_DAYS.find(d => d.day === triggerDayNum);
+        const isDayDone = dayObj && dayObj.tasks.every(t => state.completedTasks[t.id]);
+        const key = `day-${triggerDayNum}`;
+        if (isDayDone && !state.celebrated[key]) {
+          state.celebrated[key] = true;
+          saveState();
+          launchConfetti();
+          showToast("🎉", `Day ${triggerDayNum} Complete!`, `${dayObj.title} is done. Take a real break — you earned it!`);
+          celebratedNow = true;
+        }
+      }
+
+      if (stats.doneStories === BEHAVIORAL_STORIES.length && !state.celebrated["stories-all"]) {
+        state.celebrated["stories-all"] = true;
+        saveState();
+        if (!celebratedNow) {
+          launchConfetti();
+          showToast("💬", "All 6 Behavioral Stories Ready!", "Your nontechnical interview stories are locked in.");
+          celebratedNow = true;
+        }
+      }
+
+      if (stats.pct >= 50 && !state.celebrated["halfway"]) {
+        state.celebrated["halfway"] = true;
+        saveState();
+        if (!celebratedNow) {
+          launchConfetti();
+          showToast("🔥", "Halfway Milestone Reached!", "50% of the entire 10-day plan is complete. Keep going!");
+          celebratedNow = true;
+        }
+      }
+
+      if (stats.pct === 100 && !state.celebrated["all-done"]) {
+        state.celebrated["all-done"] = true;
+        saveState();
+        launchConfetti();
+        showToast("🏆", "10-Day Plan Complete!", "You put in the work. Breathe deep and crush those interviews!");
+      }
+    }
+
+    function renderHeroAndMilestones() {
+      const stats = getStats();
+
+      // Ring
+      const circumference = 2 * Math.PI * 46;
+      const offset = circumference - (stats.pct / 100) * circumference;
+      document.getElementById("progress-ring").style.strokeDashoffset = offset.toFixed(2);
+      document.getElementById("overall-pct").textContent = `${stats.pct}%`;
+
+      // Stats
+      document.getElementById("stat-days").textContent = `${stats.doneDays} / 10`;
+      document.getElementById("stat-problems").textContent = `${stats.doneProblems} / ${stats.totalProblems}`;
+      document.getElementById("stat-stories").textContent = `${stats.doneStories} / 6`;
+      document.getElementById("stat-reattempt").textContent = `${stats.reattemptCount}`;
+
+      // Badges
+      document.getElementById("nav-plan-badge").textContent = `${stats.doneTasks}/${stats.totalTasks}`;
+      document.getElementById("nav-beh-badge").textContent = `${stats.doneStories}/6`;
+      document.getElementById("nav-mis-badge").textContent = `${state.mistakes.length}`;
+
+      // Encouragement
+      const [emoji, msg] = getEncouragement(stats);
+      document.getElementById("encouragement-text").innerHTML = `<span>${emoji}</span><span>${msg}</span>`;
+
+      // Milestones
+      const d1Done = PLAN_DAYS[0].tasks.every(t => state.completedTasks[t.id]);
+      const swDone = PLAN_DAYS[0].tasks.concat(PLAN_DAYS[1].tasks).every(t => state.completedTasks[t.id]);
+      const graphsDone = PLAN_DAYS[2].tasks.concat(PLAN_DAYS[3].tasks, PLAN_DAYS[4].tasks).every(t => state.completedTasks[t.id]);
+      const allCoreDone = PLAN_DAYS.slice(0, 8).every(d => d.tasks.every(t => state.completedTasks[t.id]));
+
+      const milestones = [
+        { icon: "🌱", label: "First Step", unlocked: stats.doneTasks >= 1 },
+        { icon: "🪟", label: "Sliding Windows Mastered", unlocked: swDone },
+        { icon: "🗺️", label: "Grids, Graphs & Trees", unlocked: graphsDone },
+        { icon: "🔥", label: "Halfway There (50%)", unlocked: stats.pct >= 50 },
+        { icon: "💬", label: "6 Stories Ready", unlocked: stats.doneStories === 6 },
+        { icon: "⚡", label: "All 8 Core Days Done", unlocked: allCoreDone },
+        { icon: "🏆", label: "Interview Ready", unlocked: stats.pct === 100 }
+      ];
+
+      document.getElementById("milestones-strip").innerHTML = milestones.map(m => `
+        <div class="milestone-chip ${m.unlocked ? "unlocked" : ""}">
+          <span>${m.unlocked ? m.icon : "○"}</span>
+          <span>${m.label}</span>
+        </div>
+      `).join("");
+    }
+
+    // =========================================================
+    // DATE HELPER
+    // =========================================================
+    function formatDayDate(dayNum) {
+      if (!state.startDate) return "";
+      const [y, m, d] = state.startDate.split("-").map(Number);
+      const dt = new Date(y, m - 1, d + (dayNum - 1));
+      return dt.toLocaleDateString(undefined, { month: "short", day: "numeric", weekday: "short" });
+    }
+
+    // =========================================================
+    // RENDER 10-DAY PLAN
+    // =========================================================
+    function renderDayPills() {
+      const wrap = document.getElementById("day-pills");
+      wrap.innerHTML = PLAN_DAYS.map(d => {
+        const done = d.tasks.filter(t => state.completedTasks[t.id]).length;
+        const total = d.tasks.length;
+        const isDone = done === total;
+        const pct = Math.round((done / total) * 100);
+        const selected = state.selectedDay === d.day;
+
+        return `
+          <button class="day-pill ${selected ? "selected" : ""} ${isDone ? "completed" : ""}" data-day="${d.day}">
+            <span class="day-pill-num">Day ${d.day}</span>
+            <span class="day-pill-icon">${isDone ? "✓" : `${done}/${total}`}</span>
+            <span class="day-pill-sub">${d.short}</span>
+            <span class="day-pill-bar"><span class="day-pill-bar-fill" style="width:${pct}%"></span></span>
+          </button>
+        `;
+      }).join("");
+
+      wrap.querySelectorAll(".day-pill").forEach(btn => {
+        btn.addEventListener("click", () => {
+          state.selectedDay = Number(btn.dataset.day);
+          saveState();
+          renderPlanView();
+        });
+      });
+    }
+
+    function renderActiveDay() {
+      const d = PLAN_DAYS.find(x => x.day === state.selectedDay) || PLAN_DAYS[0];
+      const dateStr = formatDayDate(d.day);
+      const doneCount = d.tasks.filter(t => state.completedTasks[t.id]).length;
+
+      const card = document.getElementById("active-day-card");
+      card.innerHTML = `
+        <div class="day-header">
+          <div>
+            <div class="day-kicker">
+              Day ${d.day} of 10 · ${doneCount}/${d.tasks.length} done
+              ${dateStr ? `<span class="day-date-tag">${dateStr}</span>` : ""}
+            </div>
+            <h2 class="day-title">${d.title}</h2>
+          </div>
+          <div class="day-nav-btns">
+            <button class="icon-btn" id="prev-day-btn" ${d.day === 1 ? "disabled style='opacity:.45;cursor:default;'" : ""}>← Prev</button>
+            <button class="icon-btn" id="next-day-btn" ${d.day === 10 ? "disabled style='opacity:.45;cursor:default;'" : ""}>Next →</button>
+          </div>
+        </div>
+
+        <div class="focus-banner"><strong>Focus:</strong> ${d.focus}</div>
+        ${d.followup ? `<div class="followup-banner"><strong>Follow-up to practice:</strong> ${d.followup}</div>` : ""}
+        ${d.tip ? `<div class="tip-banner"><strong>Note:</strong> ${d.tip}</div>` : ""}
+
+        <div class="task-list">
+          ${d.tasks.map(t => {
+            const isDone = !!state.completedTasks[t.id];
+            const isFlagged = !!state.reattemptFlags[t.id];
+            const customTitle = state.customTitles[t.id];
+            const displayTitle = customTitle || t.title;
+            const showLink = t.slug && !customTitle;
+
+            return `
+              <div class="task-item ${isDone ? "done" : ""}">
+                <button class="check-btn" data-toggle-task="${t.id}" aria-label="Mark task complete">✓</button>
+                <div class="task-body">
+                  <div class="task-title-row">
+                    ${t.num && !customTitle ? `<span class="lc-num">#${t.num}</span>` : ""}
+                    ${t.isReview && !customTitle ? `<span class="review-tag">Review</span>` : ""}
+                    <span class="task-name">${escapeHtml(displayTitle)}</span>
+                  </div>
+                </div>
+                <div class="task-actions">
+                  ${d.customizable ? `<button class="swap-btn" data-swap-task="${t.id}" title="Replace with a weakness from mocks">${customTitle ? "Reset" : "Swap"}</button>` : ""}
+                  ${t.isProblem ? `<button class="flag-btn ${isFlagged ? "flagged" : ""}" data-flag-task="${t.id}">${isFlagged ? "★ Reattempt" : "☆ Reattempt"}</button>` : ""}
+                  ${showLink ? `<a class="lc-link" href="https://leetcode.com/problems/${t.slug}/" target="_blank" rel="noopener">LeetCode ↗</a>` : ""}
+                </div>
+              </div>
+            `;
+          }).join("")}
+        </div>
+
+        <div class="day-notes-box">
+          <div class="day-notes-label">
+            <span>Day ${d.day} Pattern Notes & Takeaways</span>
+            <span style="font-weight:500; text-transform:none; color:var(--ink-muted);">Auto-saved</span>
+          </div>
+          <textarea class="notes-textarea" id="day-notes-input" placeholder="Jot down key invariants, template reminders, or follow-up ideas for Day ${d.day}...">${escapeHtml(state.dayNotes[d.day] || "")}</textarea>
+        </div>
+      `;
+
+      // Wire events
+      document.getElementById("prev-day-btn")?.addEventListener("click", () => {
+        if (state.selectedDay > 1) { state.selectedDay--; saveState(); renderPlanView(); }
+      });
+      document.getElementById("next-day-btn")?.addEventListener("click", () => {
+        if (state.selectedDay < 10) { state.selectedDay++; saveState(); renderPlanView(); }
+      });
+
+      card.querySelectorAll("[data-toggle-task]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.toggleTask;
+          const next = !state.completedTasks[id];
+          if (next) state.completedTasks[id] = true;
+          else delete state.completedTasks[id];
+          saveState();
+          renderHeroAndMilestones();
+          renderPlanView();
+          if (next) checkNewCelebrations(d.day);
+        });
+      });
+
+      card.querySelectorAll("[data-flag-task]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.flagTask;
+          if (state.reattemptFlags[id]) delete state.reattemptFlags[id];
+          else state.reattemptFlags[id] = true;
+          saveState();
+          renderHeroAndMilestones();
+          renderPlanView();
+        });
+      });
+
+      card.querySelectorAll("[data-swap-task]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.swapTask;
+          if (state.customTitles[id]) {
+            delete state.customTitles[id];
+          } else {
+            const replacement = prompt("Replace this Day 8 slot with a specific weakness or problem from your mocks:");
+            if (replacement && replacement.trim()) {
+              state.customTitles[id] = replacement.trim();
+            }
+          }
+          saveState();
+          renderActiveDay();
+        });
+      });
+
+      document.getElementById("day-notes-input").addEventListener("input", e => {
+        state.dayNotes[d.day] = e.target.value;
+        saveState();
+      });
+    }
+
+    function renderDailyScheduleCard() {
+      const d = PLAN_DAYS.find(x => x.day === state.selectedDay) || PLAN_DAYS[0];
+      const card = document.getElementById("daily-schedule-card");
+
+      if (!d.hasDailySchedule) {
+        card.innerHTML = `
+          <div class="side-title">Day ${d.day} Pacing</div>
+          <div class="side-sub">${d.day === 9 ? "Full simulation day — mimic real interview timing." : "Light review day — cap at 2–3 hours total."}</div>
+          <p class="rule-text">
+            ${d.day === 9
+              ? "Use the <strong>45m Mock Timer</strong> tab for both technical mocks, then spend real time reviewing reasoning, testing, and communication."
+              : "Keep your brain fresh. Do two quick confidence reps, glance over your Mistake Log and Behavioral outlines, check your mic/camera, and rest early."}
+          </p>
+        `;
+        return;
+      }
+
+      const doneCount = DAILY_SCHEDULE.filter(s => state.scheduleDone[`d${d.day}-${s.id}`]).length;
+      card.innerHTML = `
+        <div class="side-title">
+          <span>Day ${d.day} Schedule</span>
+          <span style="font-family:var(--font-sans); font-size:12px; color:var(--sage);">${doneCount}/6</span>
+        </div>
+        <div class="side-sub">8 focused hours · Take breaks outside these blocks</div>
+        <div class="schedule-list">
+          ${DAILY_SCHEDULE.map(s => {
+            const key = `d${d.day}-${s.id}`;
+            const done = !!state.scheduleDone[key];
+            return `
+              <div class="sched-row ${done ? "done" : ""}" data-sched-key="${key}">
+                <div class="sched-check">✓</div>
+                <div>
+                  <span class="sched-time">${s.time}</span>
+                  <span class="sched-desc">${s.desc}</span>
+                </div>
+              </div>
+            `;
+          }).join("")}
+        </div>
+      `;
+
+      card.querySelectorAll("[data-sched-key]").forEach(row => {
+        row.addEventListener("click", () => {
+          const key = row.dataset.schedKey;
+          if (state.scheduleDone[key]) delete state.scheduleDone[key];
+          else state.scheduleDone[key] = true;
+          saveState();
+          renderDailyScheduleCard();
+        });
+      });
+    }
+
+    function renderReattemptSidebar() {
+      const flagged = [];
+      for (const d of PLAN_DAYS) {
+        for (const t of d.tasks) {
+          if (state.reattemptFlags[t.id]) {
+            flagged.push({ day: d.day, task: t });
+          }
+        }
+      }
+      const card = document.getElementById("reattempt-card");
+      const list = document.getElementById("reattempt-list");
+      if (!flagged.length) {
+        card.style.display = "none";
+        return;
+      }
+      card.style.display = "block";
+      list.innerHTML = flagged.map(item => `
+        <div class="reattempt-item" data-jump-day="${item.day}">
+          <span><strong>${item.task.num ? `#${item.task.num} ` : ""}</strong>${escapeHtml(state.customTitles[item.task.id] || item.task.title)}</span>
+          <span style="font-size:11px; font-weight:700; opacity:.8;">Day ${item.day}</span>
+        </div>
+      `).join("");
+
+      list.querySelectorAll("[data-jump-day]").forEach(el => {
+        el.addEventListener("click", () => {
+          state.selectedDay = Number(el.dataset.jumpDay);
+          saveState();
+          renderPlanView();
+        });
+      });
+    }
+
+    function renderPlanView() {
+      renderDayPills();
+      renderActiveDay();
+      renderDailyScheduleCard();
+      renderReattemptSidebar();
+    }
+
+    // =========================================================
+    // RENDER BEHAVIORAL STORIES
+    // =========================================================
+    function renderBehavioral() {
+      const grid = document.getElementById("stories-grid");
+      grid.innerHTML = BEHAVIORAL_STORIES.map((story, idx) => {
+        const done = !!state.completedStories[story.id];
+        const saved = state.storyNotes[story.id] || {};
+        return `
+          <div class="story-card ${done ? "done" : ""}">
+            <div class="story-head">
+              <div class="story-head-left">
+                <button class="check-btn" data-toggle-story="${story.id}" style="${done ? "background:var(--sage);border-color:var(--sage);color:#fff;" : ""}">✓</button>
+                <div>
+                  <div style="font-size:11px; font-weight:700; color:var(--ink-muted); text-transform:uppercase;">Story ${idx + 1}</div>
+                  <div class="story-title">${story.title}</div>
+                </div>
+              </div>
+              <span style="font-size:11.5px; font-weight:700; color:${done ? "var(--sage)" : "var(--ink-muted)"};">${done ? "Ready" : "In progress"}</span>
+            </div>
+            <div class="story-prompts">
+              ${STORY_PROMPTS.map(p => `
+                <div class="prompt-field">
+                  <label>${p.label}</label>
+                  <textarea data-story-id="${story.id}" data-prompt-key="${p.key}" placeholder="Brief bullet notes...">${escapeHtml(saved[p.key] || "")}</textarea>
+                </div>
+              `).join("")}
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      grid.querySelectorAll("[data-toggle-story]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.toggleStory;
+          const next = !state.completedStories[id];
+          if (next) state.completedStories[id] = true;
+          else delete state.completedStories[id];
+          saveState();
+          renderHeroAndMilestones();
+          renderBehavioral();
+          if (next) checkNewCelebrations();
+        });
+      });
+
+      grid.querySelectorAll("textarea[data-story-id]").forEach(ta => {
+        ta.addEventListener("input", () => {
+          const sid = ta.dataset.storyId;
+          const key = ta.dataset.promptKey;
+          if (!state.storyNotes[sid]) state.storyNotes[sid] = {};
+          state.storyNotes[sid][key] = ta.value;
+          saveState();
+        });
+      });
+    }
+
+    // =========================================================
+    // 45-MINUTE MOCK TIMER
+    // =========================================================
+    const TOTAL_MOCK_SEC = 45 * 60;
+    let mockElapsed = 0;
+    let mockInterval = null;
+    let soundOn = true;
+    let lastPhaseIdx = 0;
+
+    function playChime() {
+      if (!soundOn) return;
+      try {
+        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        const ctx = new AudioCtx();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
+        osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.16);
+        gain.gain.setValueAtTime(0.12, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.55);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.55);
+      } catch (e) {}
+    }
+
+    function formatMMSS(sec) {
+      const m = Math.floor(sec / 60);
+      const s = sec % 60;
+      return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+    }
+
+    function renderTimer() {
+      const remaining = Math.max(0, TOTAL_MOCK_SEC - mockElapsed);
+      const elapsedMin = mockElapsed / 60;
+      let activeIdx = MOCK_PHASES.findIndex(p => elapsedMin >= p.start && elapsedMin < p.end);
+      if (mockElapsed >= TOTAL_MOCK_SEC) activeIdx = MOCK_PHASES.length - 1;
+      if (activeIdx === -1) activeIdx = 0;
+
+      if (mockInterval && activeIdx !== lastPhaseIdx) {
+        playChime();
+        showToast("⏱️", `Next Mock Phase (${MOCK_PHASES[activeIdx].start}–${MOCK_PHASES[activeIdx].end}m)`, MOCK_PHASES[activeIdx].label);
+        lastPhaseIdx = activeIdx;
+      }
+
+      document.getElementById("timer-clock").textContent = formatMMSS(remaining);
+      const phase = MOCK_PHASES[activeIdx];
+      document.getElementById("timer-phase-badge").textContent =
+        mockElapsed >= TOTAL_MOCK_SEC
+          ? "Mock Complete · Great work!"
+          : `${mockInterval ? "Live" : "Paused"} · Phase ${activeIdx + 1} of 5 (${phase.start}–${phase.end}m)`;
+      document.getElementById("timer-sub").textContent =
+        `Elapsed: ${formatMMSS(mockElapsed)} · ${phase.label}`;
+
+      // Timeline segments
+      document.getElementById("phase-timeline").innerHTML = MOCK_PHASES.map((p, i) => {
+        const dur = p.end - p.start;
+        let fillPct = 0;
+        if (elapsedMin >= p.end) fillPct = 100;
+        else if (elapsedMin > p.start) fillPct = ((elapsedMin - p.start) / dur) * 100;
+        return `
+          <div class="phase-seg ${i === activeIdx && mockElapsed < TOTAL_MOCK_SEC ? "active" : ""}" style="flex:${dur};">
+            <div class="phase-seg-fill" style="width:${fillPct.toFixed(1)}%"></div>
+          </div>
+        `;
+      }).join("");
+
+      // Phase breakdown list
+      document.getElementById("phase-list").innerHTML = MOCK_PHASES.map((p, i) => {
+        const passed = elapsedMin >= p.end;
+        const isActive = i === activeIdx && mockElapsed < TOTAL_MOCK_SEC;
+        return `
+          <div class="phase-row ${passed ? "passed" : isActive ? "active" : ""}">
+            <span class="phase-min">${p.start}–${p.end} min</span>
+            <span style="font-size:13.5px; font-weight:600; color:var(--ink);">${p.label}</span>
+          </div>
+        `;
+      }).join("");
+    }
+
+    document.getElementById("timer-toggle-btn").addEventListener("click", () => {
+      const btn = document.getElementById("timer-toggle-btn");
+      if (mockInterval) {
+        clearInterval(mockInterval);
+        mockInterval = null;
+        btn.textContent = "Resume Mock";
+      } else {
+        if (mockElapsed >= TOTAL_MOCK_SEC) { mockElapsed = 0; lastPhaseIdx = 0; }
+        btn.textContent = "Pause";
+        mockInterval = setInterval(() => {
+          mockElapsed++;
+          if (mockElapsed >= TOTAL_MOCK_SEC) {
+            clearInterval(mockInterval);
+            mockInterval = null;
+            btn.textContent = "Start Again";
+            playChime();
+            launchConfetti();
+            showToast("🎯", "45-Minute Mock Finished!", "Take a breather, then do your 45-minute review.");
+          }
+          renderTimer();
+        }, 1000);
+      }
+      renderTimer();
+    });
+
+    document.getElementById("timer-reset-btn").addEventListener("click", () => {
+      clearInterval(mockInterval);
+      mockInterval = null;
+      mockElapsed = 0;
+      lastPhaseIdx = 0;
+      document.getElementById("timer-toggle-btn").textContent = "Start Mock";
+      renderTimer();
+    });
+
+    document.getElementById("timer-sound-btn").addEventListener("click", e => {
+      soundOn = !soundOn;
+      e.target.textContent = `Chime: ${soundOn ? "On" : "Off"}`;
+    });
+
+    // =========================================================
+    // MISTAKE LOG
+    // =========================================================
+    function renderMistakes() {
+      const list = document.getElementById("mistake-list");
+      if (!state.mistakes.length) {
+        list.innerHTML = `<div class="empty-state">No mistakes logged yet — add your first takeaway after today's practice!</div>`;
+        return;
+      }
+
+      list.innerHTML = state.mistakes.map(m => `
+        <div class="mistake-card">
+          <div>
+            <div class="mistake-meta">
+              <strong style="font-size:14.5px;">${escapeHtml(m.problem)}</strong>
+              <span class="mistake-pattern">${escapeHtml(m.pattern)}</span>
+              <span class="mistake-date">${escapeHtml(m.date)}</span>
+            </div>
+            <div class="mistake-text"><strong>Pitfall:</strong> ${escapeHtml(m.what)}</div>
+            <div class="mistake-fix">→ Next time: ${escapeHtml(m.fix)}</div>
+          </div>
+          <button class="delete-btn" data-del-mistake="${m.id}" title="Delete entry">×</button>
+        </div>
+      `).join("");
+
+      list.querySelectorAll("[data-del-mistake]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          state.mistakes = state.mistakes.filter(m => m.id !== btn.dataset.delMistake);
+          saveState();
+          renderHeroAndMilestones();
+          renderMistakes();
+        });
+      });
+    }
+
+    document.getElementById("mistake-form").addEventListener("submit", e => {
+      e.preventDefault();
+      const problem = document.getElementById("m-problem").value.trim();
+      const pattern = document.getElementById("m-pattern").value;
+      const what = document.getElementById("m-what").value.trim();
+      const fix = document.getElementById("m-fix").value.trim();
+      if (!problem || !what || !fix) return;
+
+      state.mistakes.unshift({
+        id: String(Date.now()),
+        problem,
+        pattern,
+        what,
+        fix,
+        date: new Date().toLocaleDateString(undefined, { month: "short", day: "numeric" })
+      });
+      saveState();
+      e.target.reset();
+      renderHeroAndMilestones();
+      renderMistakes();
+      showToast("📝", "Logged!", "Turning mistakes into rules is the fastest way to level up.");
+    });
+
+    // =========================================================
+    // NAVIGATION, START DATE, BACKUP MODAL
+    // =========================================================
+    document.querySelectorAll(".nav-tab").forEach(tab => {
+      tab.addEventListener("click", () => {
+        document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
+        document.querySelectorAll(".view-panel").forEach(v => v.classList.remove("active"));
+        tab.classList.add("active");
+        document.getElementById(`view-${tab.dataset.view}`).classList.add("active");
+      });
+    });
+
+    const startDateInput = document.getElementById("start-date-input");
+    startDateInput.value = state.startDate || "";
+    startDateInput.addEventListener("change", () => {
+      state.startDate = startDateInput.value;
+      saveState();
+      renderActiveDay();
+    });
+
+    const modal = document.getElementById("backup-modal");
+    document.getElementById("open-backup-btn").addEventListener("click", () => modal.classList.add("open"));
+    document.getElementById("close-backup-btn").addEventListener("click", () => modal.classList.remove("open"));
+    modal.addEventListener("click", e => { if (e.target === modal) modal.classList.remove("open"); });
+
+    document.getElementById("export-btn").addEventListener("click", () => {
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `leetcode-10day-backup-${new Date().toISOString().slice(0, 10)}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    const importFile = document.getElementById("import-file");
+    document.getElementById("import-btn").addEventListener("click", () => importFile.click());
+    importFile.addEventListener("change", e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        try {
+          const parsed = JSON.parse(reader.result);
+          state = { ...structuredClone(defaultState), ...parsed };
+          saveState();
+          startDateInput.value = state.startDate || "";
+          initRender();
+          modal.classList.remove("open");
+          showToast("✅", "Backup Restored", "Your progress has been loaded.");
+        } catch (err) {
+          alert("That file didn't look like a valid backup JSON.");
+        }
+      };
+      reader.readAsText(file);
+      importFile.value = "";
+    });
+
+    document.getElementById("reset-btn").addEventListener("click", () => {
+      if (confirm("Reset all checkboxes, notes, behavioral stories, and mistake logs?")) {
+        state = structuredClone(defaultState);
+        saveState();
+        startDateInput.value = "";
+        initRender();
+        modal.classList.remove("open");
+      }
+    });
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    function initRender() {
+      renderHeroAndMilestones();
+      renderPlanView();
+      renderBehavioral();
+      renderTimer();
+      renderMistakes();
+    }
+
+    initRender();
+  </script>
+</body>
+</html>
